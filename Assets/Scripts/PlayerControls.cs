@@ -21,6 +21,9 @@ public class PlayerControls : MonoBehaviour {
         controller = GetComponent<CharacterController>();
         queuedJump = false;
         cam = Camera.main;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update() {
@@ -39,7 +42,7 @@ public class PlayerControls : MonoBehaviour {
 
         Vector3 addedVelocity = input * playerSpeed;
         playerVelocity.x = Mathf.Lerp(playerVelocity.x, addedVelocity.x, Time.deltaTime*20);
-        playerVelocity.z = Mathf.Lerp(playerVelocity.z, addedVelocity.z, Time.deltaTime*20);
+        playerVelocity.z = Mathf.Lerp(playerVelocity.z, addedVelocity.z, Time.deltaTime*40);
 
 
         // restarts
