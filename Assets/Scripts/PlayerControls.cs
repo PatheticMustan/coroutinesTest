@@ -14,7 +14,7 @@ public class PlayerControls : MonoBehaviour {
     public bool queuedJump;
     private Camera cam;
 
-    private float xSpeed, zSpeed;
+    public Vector3 checkpoint;
 
 
     private void Start() {
@@ -24,6 +24,8 @@ public class PlayerControls : MonoBehaviour {
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        checkpoint = new Vector3(0, 2, 0);
     }
 
     void Update() {
@@ -47,10 +49,7 @@ public class PlayerControls : MonoBehaviour {
 
         // restarts
         if (Input.GetKeyDown(KeyCode.R)) {
-            GetComponent<CharacterController>().enabled = false;
-            transform.position = new Vector3(0, 1, 0);
-            GetComponent<CharacterController>().enabled = true;
-            playerVelocity = new Vector3(0, 0, 0);
+            Restart();
         }
 
 
@@ -67,5 +66,12 @@ public class PlayerControls : MonoBehaviour {
 
         // use the resulting vector as the player's velocity, multiplied by horizontal rotation
         controller.Move(hr * playerVelocity * Time.deltaTime);
+    }
+
+    public void Restart() {
+        GetComponent<CharacterController>().enabled = false;
+        transform.position = checkpoint;
+        GetComponent<CharacterController>().enabled = true;
+        playerVelocity = new Vector3(0, 0, 0);
     }
 }
