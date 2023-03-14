@@ -9,10 +9,13 @@ public class HealthManager : MonoBehaviour {
     public IEnumerator damageEffect;
     public IEnumerator currentEffect;
 
+    private PlayerControls pc;
+
     public int health;
 
     void Start() {
         health = upperLimit;
+        pc = GetComponent<PlayerControls>();
     }
 
     void Update() {
@@ -21,7 +24,7 @@ public class HealthManager : MonoBehaviour {
         if (health <= 0) {
             if (currentEffect != null) StopCoroutine(currentEffect);
             health = 100;
-            gameObject.GetComponent<PlayerControls>().Restart();
+            pc.Restart();
         }
     }
 
@@ -70,6 +73,13 @@ public class HealthManager : MonoBehaviour {
                     break;
                 }
 
+            case "Trampoline": {
+                    if (pc.queuedJump) {
+                        pc.playerVelocity += new Vector3(0, 30, 0);
+                    }
+                    break;
+                }
+
             case "Poison": {
                     if (currentEffect != null) {
                         StopCoroutine(currentEffect);
@@ -82,7 +92,7 @@ public class HealthManager : MonoBehaviour {
                 }
 
             case "Fullheal": {
-                    GetComponent<PlayerControls>().checkpoint = collision.transform.position + new Vector3(0, 2, 0);
+                    pc.checkpoint = collision.transform.position + new Vector3(0, 2, 0);
                     if (currentEffect != null) StopCoroutine(currentEffect);
                     currentEffect = Fullheal();
                     StartCoroutine(currentEffect);
