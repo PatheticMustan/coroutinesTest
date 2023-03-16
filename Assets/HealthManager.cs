@@ -6,6 +6,7 @@ using TMPro;
 public class HealthManager : MonoBehaviour {
     public int upperLimit = 100;
     public TMP_Text text;
+    
     public IEnumerator damageEffect;
     public IEnumerator currentEffect;
 
@@ -55,8 +56,11 @@ public class HealthManager : MonoBehaviour {
         yield return null;
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    private void OnCollisionStay(Collision collision) {
         switch (collision.gameObject.tag) {
+            case "Untagged": {
+                    break;
+                }
             // instantly kill the player with overwhelming power
             case "Void": {
                     health -= 999999;
@@ -64,30 +68,31 @@ public class HealthManager : MonoBehaviour {
                 }
 
             case "Spike": {
+                    Debug.Log(damageEffect);
                     if (damageEffect != null) {
-                        StopCoroutine(damageEffect);
                         if (damageEffect.ToString().Contains("Spike")) break;
-                        damageEffect = Spike();
-                        StartCoroutine(damageEffect);
+                        StopCoroutine(damageEffect);
                     }
+                    damageEffect = Spike();
+                    StartCoroutine(damageEffect);
                     break;
                 }
 
             case "Trampoline": {
                     if (pc.queuedJump) {
-                        pc.playerVelocity += new Vector3(0, 30, 0);
+                        pc.playerVelocity += new Vector3(0, 20, 0);
                     }
                     break;
                 }
 
             case "Poison": {
                     if (currentEffect != null) {
-                        StopCoroutine(currentEffect);
                         // don't afflict poison if they're already poisoned
                         if (currentEffect.ToString().Contains("Poison")) break;
-                        currentEffect = Poison();
-                        StartCoroutine(currentEffect);
+                        StopCoroutine(currentEffect);
                     }
+                    currentEffect = Poison();
+                    StartCoroutine(currentEffect);
                     break;
                 }
 
@@ -112,7 +117,10 @@ public class HealthManager : MonoBehaviour {
         switch (collision.gameObject.tag) {
             case "Spike": {
                     if (damageEffect != null) {
-                        if (damageEffect.ToString().Contains("Spike")) StopCoroutine(damageEffect);
+                        if (damageEffect.ToString().Contains("Spike")) {
+                            StopCoroutine(damageEffect);
+                            damageEffect = null;
+                        }
                     }
                     break;
                 }

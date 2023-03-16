@@ -25,7 +25,7 @@ public class PlayerControls : MonoBehaviour {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        checkpoint = new Vector3(0, 2, 0);
+        checkpoint = new Vector3(0, 1, 0);
     }
 
     void Update() {
